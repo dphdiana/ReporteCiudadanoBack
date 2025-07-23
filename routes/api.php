@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EstadoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -23,3 +25,15 @@ Route::delete('/usuarios/{id}', [UserController::class, 'destroy']);
 Route::get('/usuarios/{id}', [UserController::class, 'show']);
 Route::put('/usuarios/{id}', [UserController::class, 'update']);
 
+
+Route::post('/categorias', [CategoriaController::class, 'store']);
+Route::get('/categorias/{id}', [CategoriaController::class, 'show']);
+Route::put('/categorias/{id}', [CategoriaController::class, 'update']);
+Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy']);
+
+
+
+Route::post('/estados', [EstadoController::class, 'store']);
+Route::get('/estados/{id}', [EstadoController::class, 'show']);
+Route::put('/estados/{id}', [EstadoController::class, 'update']);
+Route::delete('/estados/{id}', [EstadoController::class, 'destroy']);
