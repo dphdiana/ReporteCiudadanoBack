@@ -5,6 +5,8 @@ use App\Http\Controllers\EstadoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReporteController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +39,12 @@ Route::post('/estados', [EstadoController::class, 'store']);
 Route::get('/estados/{id}', [EstadoController::class, 'show']);
 Route::put('/estados/{id}', [EstadoController::class, 'update']);
 Route::delete('/estados/{id}', [EstadoController::class, 'destroy']);
+
+
+Route::post('/reportes', [ReporteController::class, 'store']);
+Route::get('/reportes', [ReporteController::class, 'index']);
+Route::get('/reportes/{id}', [ReporteController::class, 'show']);
+Route::delete('/reportes/{id}', [ReporteController::class, 'destroy']);
+Route::put('/reportes/{id}', [ReporteController::class, 'update']);
+
+
