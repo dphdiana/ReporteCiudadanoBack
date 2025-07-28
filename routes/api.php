@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ImagenController;
 
 
 /*
@@ -48,3 +49,4 @@ Route::delete('/reportes/{id}', [ReporteController::class, 'destroy']);
 Route::put('/reportes/{id}', [ReporteController::class, 'update']);
 
 
+Route::apiResource('imagenes', ImagenController::class);
