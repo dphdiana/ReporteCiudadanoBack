@@ -27,6 +27,7 @@ class UserController extends Controller
             'tipo_usuario' => $request->tipo_usuario,
         ]);
 
+        // Opcional: puedes ocultar el campo 'password' en la respuesta
         return response()->json([
             'mensaje' => 'Usuario creado con éxito',
             'usuario' => $usuario,
