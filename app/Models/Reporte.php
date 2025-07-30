@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Reporte extends Model
 {
     use HasFactory;
 
-    // Campos que se pueden asignar masivamente
     protected $fillable = [
         'titulo',
         'descripcion',
@@ -19,8 +19,12 @@ class Reporte extends Model
         'estado_id',
     ];
 
-    // Relaciones
+    protected $appends = [
+        'fecha_creacion_formateada',
+        'imagenes_urls'
+    ];
 
+    // Relaciones
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
@@ -28,7 +32,7 @@ class Reporte extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class);
     }
 
     public function estado()
@@ -36,8 +40,32 @@ class Reporte extends Model
         return $this->belongsTo(Estado::class);
     }
 
-    public function imagenes()
+public function imagenes()
+{
+    return $this->hasMany(Imagen::class, 'reporte_id');
+}
+
+    // Accesores
+    public function getFechaCreacionFormateadaAttribute()
     {
-        return $this->hasMany(Imagen::class, 'idReporte');
+        return $this->created_at->format('d/m/Y H:i');
+    }
+
+    public function getImagenesUrlsAttribute()
+    {
+        return $this->imagenes->map(function ($imagen) {
+            return [
+                'url' => Storage::url($imagen->direccion),
+                'nombre' => $imagen->nombre
+            ];
+        });
+    }
+
+    // Eventos del modelo
+    protected static function booted()
+    {
+        static::deleting(function ($reporte) {
+            $reporte->imagenes()->delete();
+        });
     }
 }

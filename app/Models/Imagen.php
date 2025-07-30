@@ -9,15 +9,16 @@ class Imagen extends Model
 {
     use HasFactory;
 
-    protected $table = 'imagenes';
+    protected $table = 'imagenes'; // ¡Esto es crucial!
 
     protected $fillable = [
-        'idReporte',
+        'reporte_id', // Cambiado de idReporte
         'direccion',
+        'nombre'
     ];
 
     public function reporte()
     {
-        return $this->belongsTo(Reporte::class, 'idReporte');
+        return $this->belongsTo(Reporte::class, 'reporte_id');
     }
 }
