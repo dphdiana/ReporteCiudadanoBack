@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EstadoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ImagenController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +23,30 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/usuarios', [UserController::class, 'store']);
+Route::delete('/usuarios/{id}', [UserController::class, 'destroy']);
+Route::get('/usuarios/{id}', [UserController::class, 'show']);
+Route::put('/usuarios/{id}', [UserController::class, 'update']);
+
+
+Route::post('/categorias', [CategoriaController::class, 'store']);
+Route::get('/categorias/{id}', [CategoriaController::class, 'show']);
+Route::put('/categorias/{id}', [CategoriaController::class, 'update']);
+Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy']);
+
+
+
+Route::post('/estados', [EstadoController::class, 'store']);
+Route::get('/estados/{id}', [EstadoController::class, 'show']);
+Route::put('/estados/{id}', [EstadoController::class, 'update']);
+Route::delete('/estados/{id}', [EstadoController::class, 'destroy']);
+
+
+Route::post('/reportes', [ReporteController::class, 'store']);
+Route::get('/reportes', [ReporteController::class, 'index']);
+Route::get('/reportes/{id}', [ReporteController::class, 'show']);
+Route::delete('/reportes/{id}', [ReporteController::class, 'destroy']);
+Route::put('/reportes/{id}', [ReporteController::class, 'update']);
+
+
+Route::apiResource('imagenes', ImagenController::class);
