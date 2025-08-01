@@ -22,7 +22,7 @@ public function store(Request $request)
     \Log::info('Archivos recibidos:', $request->file() ? ['exists' => true] : ['exists' => false]);
 
     $validatedData = $request->validate([
-        'imagen' => 'required|file|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        'imagen' => 'required|file|mimes:jpeg,png,jpg,gif,webp|max:3072 ',
         'reporte_id' => 'required|exists:reportes,id'
     ]);
 
@@ -57,7 +57,7 @@ public function store(Request $request)
         $imagen = Imagen::findOrFail($id);
 
         $request->validate([
-            'imagen' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'sometimes|image|mimes:jpeg,png,jpg,gif,webp|max:3072 ',
             'reporte_id' => 'sometimes|exists:reportes,id'
         ]);
 
@@ -111,7 +111,7 @@ public function store(Request $request)
 
         return Storage::disk('public')->download(
             $imagen->direccion, 
-            $imagen->nombre // Usar el nombre original para la descarga
+            $imagen->nombre 
         );
     }
 }

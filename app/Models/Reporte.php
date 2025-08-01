@@ -62,10 +62,13 @@ public function imagenes()
     }
 
     // Eventos del modelo
-    protected static function booted()
-    {
-        static::deleting(function ($reporte) {
-            $reporte->imagenes()->delete();
+protected static function booted()
+{
+    static::deleting(function ($reporte) {
+        // Eliminar imágenes relacionadas (activará los eventos en Imagen)
+        $reporte->imagenes()->each(function ($imagen) {
+            $imagen->delete(); // Esto activará deleting/deleted en Imagen
         });
-    }
+    });
+}
 }
