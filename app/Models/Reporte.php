@@ -7,37 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reporte extends Model
 {
+
     use HasFactory;
 
-    // Campos que se pueden asignar masivamente
+    // Campos que se pueden llenar con asignación masiva
     protected $fillable = [
-        'titulo',
-        'descripcion',
-        'categoria_id',
-        'usuario_id',
-        'ubicacion',
-        'estado_id',
+        'user_id', // ID del usuario que crea el reporte
+        'foto', // URL de la foto del reporte
+        'categoria', // categoría del reporte (basura, bache, etc.)
+        'descripcion', // pendiente, en_proceso, resuelto
+        
     ];
 
-    // Relaciones
-
-    public function categoria()
-    {
-        return $this->belongsTo(Categoria::class);
-    }
-
+    /**
+     * Relación: un reporte pertenece a un usuario
+     */
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
-    }
-
-    public function estado()
-    {
-        return $this->belongsTo(Estado::class);
-    }
-
-    public function imagenes()
-    {
-        return $this->hasMany(Imagen::class, 'idReporte');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

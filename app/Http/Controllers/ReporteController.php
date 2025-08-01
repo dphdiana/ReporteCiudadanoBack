@@ -2,130 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reporte;
+use Illuminate\Support\Facades\Auth;
 
 
 class ReporteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-public function index()
-{
-    $reportes = Reporte::with(['categoria', 'estado'])->get();
-
-    return response()->json([
-        'mensaje' => 'Lista de reportes',
-        'reportes' => $reportes
-    ]);
-}
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+       public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-        public function store(Request $request)
-    {
-        // Validar los datos recibidos
-        $validated = $request->validate([
-            'titulo' => 'required|string|max:255',
+        $request->validate([
+            'categoria' => 'required|string|in:vial,seguridad,servicios',
             'descripcion' => 'required|string',
-            'categoria_id' => 'required|exists:categorias,id',
-            'usuario_id' => 'required|exists:users,id',
-            'ubicacion' => 'required|string',
-            'estado_id' => 'required|exists:estados,id',
-
+            'foto' => 'nullable|image|max:2048', // admite imagen, max 2MB
         ]);
 
-        // Crear el reporte
-        $reporte = Reporte::create($validated);
+        // Si la foto viene como archivo, la guardamos
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('reportes', 'public');
+        }
+
+        $reporte = Reporte::create([
+            'user_id' => Auth::id(), // el usuario autenticado
+            'categoria' => $request->categoria,
+            'descripcion' => $request->descripcion,
+            'foto' => $fotoPath,
+        ]);
 
         return response()->json([
-            'mensaje' => 'Reporte creado con éxito',
+            'message' => 'Reporte creado correctamente',
             'reporte' => $reporte
         ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Lista todos los reportes (opcional para admins)
      */
-        public function show($id)
+    public function index()
     {
-    $reporte = Reporte::find($id);
+        $reportes = Reporte::with('usuario')->latest()->get();
 
-    if (!$reporte) {
-        return response()->json([
-            'mensaje' => 'Reporte no encontrado.'
-        ], 404);
+        return response()->json($reportes);
     }
-
-    return response()->json($reporte, 200);
-}
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-    $reporte = Reporte::find($id);
-
-    if (!$reporte) {
-        return response()->json([
-            'mensaje' => 'Reporte no encontrado.'
-        ], 404);
-    }
-
-    // Validar que solo venga el estado_id
-    $request->validate([
-        'estado_id' => 'required|integer|exists:estados,id',
-    ]);
-
-    $reporte->estado_id = $request->estado_id;
-    $reporte->save();
-
-    return response()->json([
-        'mensaje' => 'Estado del reporte actualizado correctamente.',
-        'reporte' => $reporte
-    ], 200);
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-    $reporte = Reporte::find($id);
-
-    if (!$reporte) {
-        return response()->json([
-            'mensaje' => 'Reporte no encontrado.'
-        ], 404);
-    }
-
-    $reporte->delete();
-
-    return response()->json([
-        'mensaje' => 'Reporte eliminado correctamente.'
-    ], 200);
-    }
-
-
 }

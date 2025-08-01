@@ -1,50 +1,29 @@
 <?php
 
-use App\Http\Controllers\CategoriaController;
-use App\Http\Controllers\EstadoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EstadoController;
 
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Rutas públicas
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/prueba', function () {
+    return response()->json(['mensaje' => 'Todo funciona correctamente']);
 });
-Route::post('/usuarios', [UserController::class, 'store']);
-Route::delete('/usuarios/{id}', [UserController::class, 'destroy']);
-Route::get('/usuarios/{id}', [UserController::class, 'show']);
-Route::put('/usuarios/{id}', [UserController::class, 'update']);
 
+// Rutas protegidas con Sanctum 
+Route::middleware('auth:sanctum')->group(function () {
 
-Route::post('/categorias', [CategoriaController::class, 'store']);
-Route::get('/categorias/{id}', [CategoriaController::class, 'show']);
-Route::put('/categorias/{id}', [CategoriaController::class, 'update']);
-Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy']);
+    Route::get('/perfil', function (Request $request) {
+        return $request->user();
+    });
 
-
-
-Route::post('/estados', [EstadoController::class, 'store']);
-Route::get('/estados/{id}', [EstadoController::class, 'show']);
-Route::put('/estados/{id}', [EstadoController::class, 'update']);
-Route::delete('/estados/{id}', [EstadoController::class, 'destroy']);
-
-
-Route::post('/reportes', [ReporteController::class, 'store']);
-Route::get('/reportes', [ReporteController::class, 'index']);
-Route::get('/reportes/{id}', [ReporteController::class, 'show']);
-Route::delete('/reportes/{id}', [ReporteController::class, 'destroy']);
-Route::put('/reportes/{id}', [ReporteController::class, 'update']);
-
-
+    // RUTAS DE REPORTES
+    Route::post('/reportes', [ReporteController::class, 'store']);
+    Route::get('/reportes', [ReporteController::class, 'index']); // opcional: para admins
+});

@@ -12,16 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reportes', function (Blueprint $table) {
-    $table->id();
-    $table->string('titulo');
-    $table->text('descripcion');
-    $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
-    $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
-    $table->text('ubicacion');
-    $table->foreignId('estado_id')->constrained('estados')->onDelete('cascade');
-    $table->timestamps();
-});
-
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('foto')->nullable();
+            $table->string('categoria');
+            $table->text('descripcion');
+            $table->timestamps();
+        });
     }
 
     /**
