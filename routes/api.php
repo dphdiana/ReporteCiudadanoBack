@@ -23,7 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+
     // RUTAS DE REPORTES
     Route::post('/reportes', [ReporteController::class, 'store']);
-    Route::get('/reportes', [ReporteController::class, 'index']); // opcional: para admins
+    Route::get('/reportes', [ReporteController::class, 'index']);
+    Route::put('reportes/{id}', [ReporteController::class, 'actualizarEstado']); // opcional: para admins
 });

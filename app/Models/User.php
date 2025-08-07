@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens,HasFactory, Notifiable;
@@ -37,6 +38,11 @@ class User extends Authenticatable
     /**
      * Autenticación usando el campo "correo" en lugar de "email"
      */
+
+    public function isAdmin()
+    {
+        return $this->tipo_usuario === 'admin';
+    }
     public function username()
     {
         return 'correo';

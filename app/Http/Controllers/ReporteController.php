@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reporte;
+
 use Illuminate\Support\Facades\Auth;
 
 
@@ -42,10 +43,35 @@ class ReporteController extends Controller
     /**
      * Lista todos los reportes (opcional para admins)
      */
-    public function index()
-    {
-        $reportes = Reporte::with('usuario')->latest()->get();
+public function index()
+{
+    // Verifica si el usuario está autenticado Y es admin
+    if (!auth()->check() || !auth()->user()->isAdmin()) {
+        return response()->json(['message' => 'No autorizado'], 403);
+    }
 
-        return response()->json($reportes);
+    $reportes = Reporte::with('usuario')->latest()->get();
+    return response()->json($reportes);
+}
+
+    public function actualarEstado(Request $request, $id)
+    {
+         $request->validate([
+        'estado' => 'required|in:pendiente,en_proceso,resuelto,rechazado'
+    ]);
+
+    $reporte = Reporte::findOrFail($id);
+
+    if (!auth()->user()->isAdmin()) {
+        return response()->json(['error' => 'No autorizado'], 403);
+    }
+
+    $reporte->estado = $request->estado;
+    $reporte->save();
+
+    return response()->json([
+        'message' => 'Estado actualizado correctamente',
+        'reporte' => $reporte
+    ]);
     }
 }
