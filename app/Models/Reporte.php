@@ -12,6 +12,7 @@ class Reporte extends Model
 
     // Campos que se pueden llenar con asignación masiva
     protected $fillable = [
+        'titulo',
         'user_id', // ID del usuario que crea el reporte
         'foto', // URL de la foto del reporte
         'categoria', // categoría del reporte (basura, bache, etc.)

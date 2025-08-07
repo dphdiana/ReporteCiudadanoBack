@@ -13,6 +13,7 @@ class ReporteController extends Controller
        public function store(Request $request)
     {
         $request->validate([
+            'titulo' => 'required|string|max:255',
             'categoria' => 'required|string|in:vial,seguridad,servicios',
             'descripcion' => 'required|string',
             'foto' => 'nullable|image|max:2048', // admite imagen, max 2MB
@@ -25,6 +26,7 @@ class ReporteController extends Controller
         }
 
         $reporte = Reporte::create([
+            'titulo' => $request->titulo,
             'user_id' => Auth::id(), // el usuario autenticado
             'categoria' => $request->categoria,
             'descripcion' => $request->descripcion,
