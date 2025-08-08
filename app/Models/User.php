@@ -15,8 +15,8 @@ class User extends Authenticatable
 
     // Campos que se pueden llenar con asignación masiva
     protected $fillable = [
-        'nombre',
-        'correo',
+        'name',
+        'email',
         'password',
         'tipo_usuario', // admin o ciudadano
     ];
@@ -45,6 +45,6 @@ class User extends Authenticatable
     }
     public function username()
     {
-        return 'correo';
+        return 'email';
     }
 }
