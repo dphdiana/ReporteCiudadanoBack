@@ -32,6 +32,7 @@ class ReporteController extends Controller
             'categoria' => $request->categoria,
             'descripcion' => $request->descripcion,
             'foto' => $fotoPath,
+            'estado' => 'pendiente', // estado por defecto al crear un reporte
         ]);
 
         return response()->json([
@@ -54,18 +55,17 @@ public function index()
     return response()->json($reportes);
 }
 
-    public function actualarEstado(Request $request, $id)
-    {
-         $request->validate([
+   public function actualizarEstado(Request $request, $id)
+{
+    // Validar que el estado enviado sea uno permitido
+    $request->validate([
         'estado' => 'required|in:pendiente,en_proceso,resuelto,rechazado'
     ]);
 
+    // Buscar el reporte por ID
     $reporte = Reporte::findOrFail($id);
 
-    if (!auth()->user()->isAdmin()) {
-        return response()->json(['error' => 'No autorizado'], 403);
-    }
-
+    // Actualizar el estado
     $reporte->estado = $request->estado;
     $reporte->save();
 
@@ -73,5 +73,6 @@ public function index()
         'message' => 'Estado actualizado correctamente',
         'reporte' => $reporte
     ]);
-    }
+}
+
 }

@@ -16,8 +16,9 @@ class Reporte extends Model
         'user_id', // ID del usuario que crea el reporte
         'foto', // URL de la foto del reporte
         'categoria', // categoría del reporte (basura, bache, etc.)
-        'descripcion', // pendiente, en_proceso, resuelto
-        
+        'descripcion', // descripción del reporte
+        'estado', // estado del reporte (pendiente, en_proceso, resuelto)
+
     ];
 
     /**
