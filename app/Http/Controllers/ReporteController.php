@@ -35,6 +35,8 @@ class ReporteController extends Controller
             'descripcion' => $request->descripcion,
             'foto' => $fotoPath,
             'estado' => 'pendiente', // estado por defecto al crear un reporte
+            'latitud' => $request->latitud,
+            'longitud' => $request->longitud
         ]);
 
         return response()->json([
