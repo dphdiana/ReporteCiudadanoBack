@@ -18,6 +18,8 @@ class Reporte extends Model
         'categoria', // categoría del reporte (basura, bache, etc.)
         'descripcion', // descripción del reporte
         'estado', // estado del reporte (pendiente, en_proceso, resuelto)
+        'latitud', // latitud del reporte
+        'longitud' // longitud del reporte
 
     ];
 

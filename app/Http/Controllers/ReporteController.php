@@ -17,7 +17,9 @@ class ReporteController extends Controller
             'titulo' => 'required|string|max:255',
             'categoria' => 'required|string|in:vial,seguridad,servicios',
             'descripcion' => 'required|string',
-            'foto' => 'nullable|image|max:2048', // admite imagen, max 2MB
+            'foto' => 'nullable|image|max:2048',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric'
         ]);
 
         // Si la foto viene como archivo, la guardamos
