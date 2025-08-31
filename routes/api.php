@@ -29,4 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/reportes', [ReporteController::class, 'index']);
     Route::put('reportes/{id}/estado', [ReporteController::class, 'actualizarEstado']); // opcional: para admins
     Route::delete('reportes/{id}', [ReporteController::class, 'destroy']); // opcional: para admins
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
 });

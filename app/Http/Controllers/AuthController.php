@@ -60,4 +60,15 @@ class AuthController extends Controller
             'token' => $token
         ]);
     }
+
+    public function logout(Request $request)
+{
+    // Revoca el token actual
+    $request->user()->currentAccessToken()->delete();
+
+    return response()->json([
+        'message' => 'Sesión cerrada correctamente'
+    ]);
+}
+
 }
